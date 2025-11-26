@@ -18,7 +18,15 @@ This tool automates adding your work schedule from Gmail to Google Calendar.
     - Download the JSON file and save it as `credentials.json` in this folder.
     - **Important**: Add your email as a "Test User" in the OAuth consent screen configuration if the app is not published.
 
-3.  **Run the Script**:
+3.  **Configure Environment Variables** (Optional):
+    - Create a `.env` file in the project root
+    - Add your Discord webhook URL for update notifications:
+      ```
+      DISCORD_WEBHOOK_URL=your_webhook_url_here
+      ```
+    - This is used by `auto_update.sh` to send notifications when the script is updated via git
+
+4.  **Run the Script**:
     ```bash
     python3 main.py
     ```
@@ -41,6 +49,18 @@ This tool automates adding your work schedule from Gmail to Google Calendar.
 - **Smart Sync**: Updates existing events if schedule changes.
 - **Dedicated Calendar**: Uses "Work Schedule" calendar.
 - **Shift Adjustment**: Automatically subtracts **20 minutes** from the start time (e.g., 12:00 -> 11:40) so you arrive early.
+
+## Auto-Update
+
+The included `auto_update.sh` script automatically pulls updates from git and notifies via Discord:
+
+```bash
+./auto_update.sh
+```
+
+- Runs `git pull` to check for updates
+- If updates are found, sends a notification to Discord (requires `DISCORD_WEBHOOK_URL` in `.env`)
+- Can be set up as a cron job to automatically check for and apply updates
 
 ## Deployment
 
