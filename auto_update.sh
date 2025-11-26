@@ -25,8 +25,11 @@ fi
 # Get the changes (commit messages)
 CHANGES=$(git log --pretty=format:"• \`%h\` %s (%an)" $OLD_HEAD..$NEW_HEAD)
 
+# Get machine hostname
+HOSTNAME=$(hostname)
+
 # Prepare the message content
-MESSAGE="🚀 **Update pulled on LOCAL machine!**
+MESSAGE="🚀 **Update pulled on \`$HOSTNAME\`!**
 
 **Changes:**
 $CHANGES
