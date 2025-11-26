@@ -1,6 +1,7 @@
 # Google API Credentials
 credentials.json
 token.json
+.env
 
 # Python
 __pycache__/
