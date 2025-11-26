@@ -20,11 +20,20 @@ This tool automates adding your work schedule from Gmail to Google Calendar.
 
 3.  **Configure Environment Variables** (Optional):
     - Create a `.env` file in the project root
-    - Add your Discord webhook URL for update notifications:
+    - **Discord Notifications:**
       ```
       DISCORD_WEBHOOK_URL=your_webhook_url_here
       ```
-    - This is used by `auto_update.sh` to send notifications when the script is updated via git
+      This is used by `auto_update.sh` to send notifications when the script is updated via git
+    - **Calendar Configuration:**
+      ```
+      # Option 1: Use a specific calendar ID (recommended for shared calendars)
+      CALENDAR_ID=your_calendar_id@group.calendar.google.com
+      
+      # Option 2: Use calendar name (will create if doesn't exist)
+      CALENDAR_NAME=Work Schedule
+      ```
+      If `CALENDAR_ID` is set, it will be used directly. Otherwise, the script will find or create a calendar with the name specified in `CALENDAR_NAME` (defaults to "Work Schedule")
 
 4.  **Run the Script**:
     ```bash

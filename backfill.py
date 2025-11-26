@@ -20,8 +20,14 @@ def main():
         gmail_service = get_gmail_service()
         calendar_service = get_calendar_service()
         
-        calendar_id = get_or_create_calendar(calendar_service, "Work Schedule")
-        print(f"Using calendar: Work Schedule (ID: {calendar_id})")
+        # Get calendar ID from environment variable or create/find by name
+        calendar_id = os.environ.get('CALENDAR_ID')
+        if calendar_id:
+            print(f"Using calendar ID from CALENDAR_ID env var: {calendar_id}")
+        else:
+            calendar_name = os.environ.get('CALENDAR_NAME', 'Work Schedule')
+            calendar_id = get_or_create_calendar(calendar_service, calendar_name)
+            print(f"Using calendar: {calendar_name} (ID: {calendar_id})")
         
     except Exception as e:
         print(f"Authentication failed: {e}")
