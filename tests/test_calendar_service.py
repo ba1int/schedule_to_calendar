@@ -14,6 +14,12 @@ class TestCalendarService(unittest.TestCase):
         """Set up mock service for testing"""
         self.service = Mock()
         self.calendar_id = 'test_calendar_id'
+        # Mock environment variable
+        self.env_patcher = patch.dict('os.environ', {'EVENT_SUMMARY': 'Work at McDonald\'s'})
+        self.env_patcher.start()
+        
+    def tearDown(self):
+        self.env_patcher.stop()
         
     def test_get_events_in_range(self):
         """Test querying events in a date range"""

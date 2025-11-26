@@ -2,6 +2,7 @@ from googleapiclient.discovery import build
 from auth import get_credentials
 from datetime import timedelta
 from dateutil import tz
+import os
 
 def get_calendar_service():
     creds = get_credentials()
@@ -32,11 +33,13 @@ def get_or_create_calendar(service, calendar_name='Work Schedule'):
     created_calendar = service.calendars().insert(body=calendar).execute()
     return created_calendar['id']
 
-def get_existing_event(service, calendar_id, start_time, end_time, summary='Work at McDonald\'s'):
+def get_existing_event(service, calendar_id, start_time, end_time, summary=None):
     """
     Checks if an event with the same summary exists on the same day.
     Returns the event object if found, None otherwise.
     """
+    if summary is None:
+        summary = os.environ.get('EVENT_SUMMARY', 'Work at McDonald\'s')
     # Ensure start_time and end_time are timezone aware (Budapest)
     budapest_tz = tz.gettz('Europe/Budapest')
     if start_time.tzinfo is None:
@@ -63,11 +66,13 @@ def get_existing_event(service, calendar_id, start_time, end_time, summary='Work
             
     return None
 
-def get_events_in_range(service, calendar_id, start_date, end_date, summary='Work at McDonald\'s'):
+def get_events_in_range(service, calendar_id, start_date, end_date, summary=None):
     """
     Gets all events with the given summary within a date range.
     Returns a list of event objects.
     """
+    if summary is None:
+        summary = os.environ.get('EVENT_SUMMARY', 'Work at McDonald\'s')
     from datetime import datetime
     budapest_tz = tz.gettz('Europe/Budapest')
     

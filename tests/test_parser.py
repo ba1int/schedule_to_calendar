@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from datetime import datetime
 import sys
 import os
@@ -9,6 +10,14 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../src'))
 from email_parser import parse_schedule_email
 
 class TestParser(unittest.TestCase):
+    def setUp(self):
+        # Mock environment variable to ensure consistent test results
+        self.env_patcher = patch.dict('os.environ', {'EVENT_SUMMARY': 'Work at McDonald\'s'})
+        self.env_patcher.start()
+        
+    def tearDown(self):
+        self.env_patcher.stop()
+
     def test_schedule_change_html(self):
         email_text = """
 <p>Kedves Bencsok Bálint!</p>

@@ -1,4 +1,5 @@
 import re
+import os
 from datetime import datetime, timedelta
 
 def clean_html(raw_html):
@@ -64,8 +65,11 @@ def parse_schedule_email(email_body):
                 # Adjust start time: subtract 20 minutes
                 start_dt = start_dt - timedelta(minutes=20)
                 
+                # Get summary from env var or default
+                summary = os.environ.get('EVENT_SUMMARY', 'Work at McDonald\'s')
+                
                 events.append({
-                    'summary': 'Work at McDonald\'s',
+                    'summary': summary,
                     'start': start_dt,
                     'end': end_dt,
                     'description': f"{day_name}: {schedule_str}"

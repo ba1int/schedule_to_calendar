@@ -44,8 +44,8 @@ def main():
         return
 
     print("Searching for recent schedule emails...")
-    # Search last 2 months, max 30 results (increased to catch more updates)
-    messages = search_schedule_emails(gmail_service, max_results=30, newer_than='2m')
+    # Search last 2 months, max 10 results
+    messages = search_schedule_emails(gmail_service, max_results=10, newer_than='2m')
     
     if not messages:
         print("No schedule emails found.")
