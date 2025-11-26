@@ -63,6 +63,41 @@ def get_existing_event(service, calendar_id, start_time, end_time, summary='Work
             
     return None
 
+def get_events_in_range(service, calendar_id, start_date, end_date, summary='Work at McDonald\'s'):
+    """
+    Gets all events with the given summary within a date range.
+    Returns a list of event objects.
+    """
+    budapest_tz = tz.gettz('Europe/Budapest')
+    
+    # Ensure dates are timezone aware
+    if start_date.tzinfo is None:
+        start_date = start_date.replace(tzinfo=budapest_tz)
+    if end_date.tzinfo is None:
+        end_date = end_date.replace(tzinfo=budapest_tz)
+    
+    # Set to start and end of days
+    day_start = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
+    day_end = end_date.replace(hour=23, minute=59, second=59, microsecond=999999)
+    
+    time_min = day_start.astimezone(tz.UTC).isoformat().replace('+00:00', 'Z')
+    time_max = day_end.astimezone(tz.UTC).isoformat().replace('+00:00', 'Z')
+    
+    events_result = service.events().list(calendarId=calendar_id, timeMin=time_min,
+                                        timeMax=time_max, singleEvents=True,
+                                        orderBy='startTime').execute()
+    events = events_result.get('items', [])
+    
+    # Filter by summary
+    return [event for event in events if event.get('summary') == summary]
+
+def delete_event(service, calendar_id, event_id):
+    """
+    Deletes a calendar event.
+    """
+    service.events().delete(calendarId=calendar_id, eventId=event_id).execute()
+    print(f"Event deleted: {event_id}")
+
 def update_event(service, calendar_id, event_id, event_data):
     """
     Updates an existing calendar event.

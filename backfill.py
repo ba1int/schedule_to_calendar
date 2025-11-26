@@ -42,8 +42,8 @@ def main():
         # Process from oldest to newest to ensure correct history
         messages.reverse()
         
-        added, updated = process_messages(gmail_service, calendar_service, calendar_id, messages)
-        print(f"\nDone! Added: {added}, Updated: {updated}")
+        added, updated, deleted = process_messages(gmail_service, calendar_service, calendar_id, messages)
+        print(f"\nDone! Added: {added}, Updated: {updated}, Deleted: {deleted}")
     
     end_time = datetime.now()
     duration = (end_time - start_time).total_seconds()
