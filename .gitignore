@@ -1,0 +1,14 @@
+# Google API Credentials
+credentials.json
+token.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# OS specific
+.DS_Store
