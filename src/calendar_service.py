@@ -68,7 +68,14 @@ def get_events_in_range(service, calendar_id, start_date, end_date, summary='Wor
     Gets all events with the given summary within a date range.
     Returns a list of event objects.
     """
+    from datetime import datetime
     budapest_tz = tz.gettz('Europe/Budapest')
+    
+    # Convert date to datetime if needed
+    if not isinstance(start_date, datetime):
+        start_date = datetime.combine(start_date, datetime.min.time())
+    if not isinstance(end_date, datetime):
+        end_date = datetime.combine(end_date, datetime.max.time())
     
     # Ensure dates are timezone aware
     if start_date.tzinfo is None:
