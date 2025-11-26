@@ -1,5 +1,6 @@
 import sys
 import os
+from datetime import datetime
 
 # Add src to path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
@@ -9,6 +10,11 @@ from calendar_service import get_calendar_service, get_or_create_calendar
 from processor import process_messages
 
 def main():
+    start_time = datetime.now()
+    print("=" * 60)
+    print(f"Schedule Automation Started: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 60)
+    
     print("Authenticating with Google Services...")
     try:
         gmail_service = get_gmail_service()
@@ -21,6 +27,11 @@ def main():
     except Exception as e:
         print(f"Authentication/Setup failed: {e}")
         print("Please ensure you have 'credentials.json' in the project root.")
+        end_time = datetime.now()
+        duration = (end_time - start_time).total_seconds()
+        print("=" * 60)
+        print(f"Finished (with errors): {end_time.strftime('%Y-%m-%d %H:%M:%S')} (Duration: {duration:.2f}s)")
+        print("=" * 60)
         return
 
     print("Searching for recent schedule emails...")
@@ -29,11 +40,15 @@ def main():
     
     if not messages:
         print("No schedule emails found.")
-        return
-        
-    added, updated = process_messages(gmail_service, calendar_service, calendar_id, messages)
-            
-    print(f"\nDone! Added: {added}, Updated: {updated}")
+    else:
+        added, updated = process_messages(gmail_service, calendar_service, calendar_id, messages)
+        print(f"\nDone! Added: {added}, Updated: {updated}")
+    
+    end_time = datetime.now()
+    duration = (end_time - start_time).total_seconds()
+    print("=" * 60)
+    print(f"Finished successfully: {end_time.strftime('%Y-%m-%d %H:%M:%S')} (Duration: {duration:.2f}s)")
+    print("=" * 60)
 
 if __name__ == '__main__':
     main()
